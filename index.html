@@ -5,23 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
-    <!-- <script src="https://unpkg.com/tonweb@0.0.41/dist/tonweb.js"></script> --> 
+    <script src="https://unpkg.com/tonweb@0.0.41/dist/tonweb.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+
+    <link rel="stylesheet" href="style.css">
     
     <title>Ton</title>
 </head>
 <body>
 
-    <style>
-        #send-trans {
-            width: 100px;
-            height: 100px;
-            border: 1px solid black;
-        }
-    </style>
-
-    <div id="ton-connect">Connect</div>
+    
     <div id="send-trans">SEND</div>
+
+    <div class="header">
+        <div class="header-menu">
+            <span>
+                <h1>Notcoin Market <span class="beta">beta</span></h1>
+            </span>
+            <div id="ton-connect"></div>
+        </div>
+    </div>
+
+            
+    <div class="header-des"><p>NFT-маркетплейс Notcoin, работающий на блокчейне The Open Network.</p>
+        <p>Мы не берем комиссию за транзакции. Все сделки происходят напрямую между продавцом и покупателем с помощью уникального смарт-контракта NotSwapper.</p>
+        <p>Смарт-контракт гарантирует 100% безопаность сделки между продавцом и покупателем.</p>
+    </div>
+
+
+    <div class="list-items">
+        <div class="item">
+            <span class="item-box-name">Вам предложили обмен:</span>
+            <div class="item-img"><img src="https://i.getgems.io/ZL-3inLrG-6zgiOOfokQwZnsNc9PxfCjYBQpMYNVkQk/rs:fill:500:500:1/g:ce/czM6Ly9nZXRnZW1zLXMzL25mdC1jb250ZW50LWNhY2hlL2ltYWdlcy9FUURta2o2NUFiX20wYVphVzhJcEt3NGtZcUlnSVR3X0hSc3RZRWtWUTZOSVlDeVcvYzA5MWZiMzlmMDMyNzIxNw" alt=""></div>
+            <span class="item-title"><b>10M Notcoin Voucher</b></span>
+            <div class="item-price"><span class="item-price-1">Price:</span> <span class="item-price-2">16 TON</span></div>
+            <span class="buy-list">BUY</span>
+        </div>
+    </div>
+
+
+
+
     <script>
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://romanovboris.github.io/tondurova.github.io/tonconnect-manifest.json',
@@ -30,14 +55,16 @@
     </script>
     <script>
 
-       
+        const tonweb = new window.TonWeb();
 
         async function connectToWallet() {
             const connectedWallet = await tonConnectUI.connectWallet();
 
 
             console.log('подключено');
-            console.log(connectedWallet);
+            console.log(connectedWallet['address']);
+
+            const balance = await tonweb.getBalance(address);
 
             tonConnectUI.uiOptions = {
                 actionsConfiguration: {
