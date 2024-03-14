@@ -41,8 +41,12 @@
         });
 
         async function getWalletsList() {
-            const walletsList = await tonConnectUI.getWallets();
-            console.log(walletsList);
+            const currentWallet = await tonConnectUI.wallet;
+            const currentWalletInfo = await tonConnectUI.walletInfo;
+            const currentAccount = await tonConnectUI.account;
+            console.log(currentWallet);
+            console.log(currentWalletInfo);
+            console.log(currentAccount);
         }
 
         getWalletsList().catch(error => {
