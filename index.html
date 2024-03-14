@@ -33,14 +33,20 @@
 
             console.log('подключено');
             console.log(connectedWallet);
-
-            const walletsList = await TonConnectUI.getWallets();
-            console.log(walletsList);
         }
     
         // Call the function
         connectToWallet().catch(error => {
             console.error("Error connecting to wallet:", error);
+        });
+
+        async function getWalletsList() {
+            const walletsList = await TonConnectUI.getWallets();
+            console.log(walletsList);
+        }
+
+        getWalletsList().catch(error => {
+            console.error("Error get wallets:", error);
         });
 
         const sendBtn = document.getElementById('send-trans');
