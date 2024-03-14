@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
-    <script src="https://unpkg.com/tonweb@0.0.41/dist/tonweb.js"></script>
+    <!-- <script src="https://unpkg.com/tonweb@0.0.41/dist/tonweb.js"></script> --> 
     
     <title>Ton</title>
 </head>
 <body >
     <div id="ton-connect">Connect</div>
+    <div id="send-trans">SEND</div>
     <script>
-
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://romanovboris.github.io/tondurova.github.io/tonconnect-manifest.json',
             buttonRootId: 'ton-connect'
@@ -21,29 +20,36 @@
     <script>
         async function connectToWallet() {
             const connectedWallet = await tonConnectUI.connectWallet();
-            const currentWallet = await tonConnectUI.wallet;
-            const currentWalletInfo = await tonConnectUI.walletInfo;
-            const currentAccount = await tonConnectUI.account;
-            const currentIsConnectedStatus = await tonConnectUI.connected;
 
             console.log('подключено');
             console.log(connectedWallet);
+
+
+            const sendBtn = document.getElementById('send-trans');
+            console.log(sendBtn);
+
+            
+            const transaction = {
+                messages: [
+                    {
+                        address: "0:412410771DA82CBA306A55FA9E0D43C9D245E38133CB58F1457DFB8D5CD8892F", // destination address
+                        amount: "20000000" //Toncoin in nanotons
+                    }
+                ]
+            }
+
+            const result = await tonConnectUI.sendTransaction(transaction)
+            console.log(result)
         }
     
         // Call the function
         connectToWallet().catch(error => {
             console.error("Error connecting to wallet:", error);
         });
+
+        
     </script>
-    
-    <script>
-        window.onload = async () => {
-            window.connector = new TonConnectSDK.TonConnect({
-            manifestUrl: 'https://ratingers.pythonanywhere.com/ratelance/tonconnect-manifest.json'
-            });
-            connector.restoreConnection();
-        }
-        </script>
+
 
 </body>
 </html>
