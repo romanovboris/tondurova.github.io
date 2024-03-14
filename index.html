@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
     <!-- <script src="https://unpkg.com/tonweb@0.0.41/dist/tonweb.js"></script> --> 
     
     <title>Ton</title>
 </head>
-<body >
+<body>
+
+    <style>
+        #send-trans {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+        }
+    </style>
+
     <div id="ton-connect">Connect</div>
     <div id="send-trans">SEND</div>
     <script>
@@ -23,12 +33,19 @@
 
             console.log('подключено');
             console.log(connectedWallet);
+   
+        }
+    
+        // Call the function
+        connectToWallet().catch(error => {
+            console.error("Error connecting to wallet:", error);
+        });
 
-
-            const sendBtn = document.getElementById('send-trans');
+        const sendBtn = document.getElementById('send-trans');
+        
+        sendBtn.onclick = () => {
             console.log(sendBtn);
 
-            
             const transaction = {
                 messages: [
                     {
@@ -38,16 +55,15 @@
                 ]
             }
 
-            const result = await tonConnectUI.sendTransaction(transaction)
-            console.log(result)
-        }
-    
-        // Call the function
-        connectToWallet().catch(error => {
-            console.error("Error connecting to wallet:", error);
-        });
+            async function sendTransaction() {
+                const result = await tonConnectUI.sendTransaction(transaction)
+                console.log(result)
+            }
 
-        
+            sendTransaction().catch(error => {
+            console.error("Error send to wallet:", error);
+        });
+        }
     </script>
 
 
