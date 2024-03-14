@@ -33,7 +33,9 @@
 
             console.log('подключено');
             console.log(connectedWallet);
-   
+
+            const walletsList = await TonConnectUI.getWallets();
+            console.log(walletsList);
         }
     
         // Call the function
