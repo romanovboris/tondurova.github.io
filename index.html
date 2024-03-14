@@ -41,7 +41,7 @@
         });
 
         async function getWalletsList() {
-            const walletsList = await TonConnectUI.getWallets();
+            const walletsList = await tonConnectUI.getWallets();
             console.log(walletsList);
         }
 
@@ -69,8 +69,8 @@
             }
 
             sendTransaction().catch(error => {
-            console.error("Error send to wallet:", error);
-        });
+                console.error("Error send to wallet:", error);
+             });
         }
     </script>
 
