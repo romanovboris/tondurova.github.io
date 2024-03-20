@@ -1,124 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
-    <script src="https://unpkg.com/tonweb@0.0.41/dist/tonweb.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Google Sheets Data Parser</title>
+    <!-- Include the Google API JavaScript library -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <style>
+      /* Add any necessary CSS styles here */
+    </style>
+  </head>
+  <body>
+    <!-- Your HTML elements for displaying parsed data go here -->
 
-
-    <link rel="stylesheet" href="style.css">
-    
-    <title>Ton</title>
-</head>
-<body>
-
-    
-    <div id="send-trans">SEND</div>
-
-    <div class="header">
-        <div class="header-menu">
-            <span>
-                <h1>Notcoin Market <span class="beta">beta</span></h1>
-            </span>
-            <div id="ton-connect"></div>
-        </div>
-    </div>
-
-            
-    <div class="header-des"><p>NFT-маркетплейс Notcoin, работающий на блокчейне The Open Network.</p>
-        <p>Мы не берем комиссию за транзакции. Все сделки происходят напрямую между продавцом и покупателем с помощью уникального смарт-контракта NotSwapper.</p>
-        <p>Смарт-контракт гарантирует 100% безопаность сделки между продавцом и покупателем.</p>
-    </div>
-
-
-    <div class="list-items">
-        <div class="item">
-            <span class="item-box-name">Вам предложили обмен:</span>
-            <div class="item-img"><img src="https://i.getgems.io/ZL-3inLrG-6zgiOOfokQwZnsNc9PxfCjYBQpMYNVkQk/rs:fill:500:500:1/g:ce/czM6Ly9nZXRnZW1zLXMzL25mdC1jb250ZW50LWNhY2hlL2ltYWdlcy9FUURta2o2NUFiX20wYVphVzhJcEt3NGtZcUlnSVR3X0hSc3RZRWtWUTZOSVlDeVcvYzA5MWZiMzlmMDMyNzIxNw" alt=""></div>
-            <span class="item-title"><b>10M Notcoin Voucher</b></span>
-            <div class="item-price"><span class="item-price-1">Price:</span> <span class="item-price-2">16 TON</span></div>
-            <span class="buy-list">BUY</span>
-        </div>
-    </div>
-
-
-
+    <!-- Load the Google Client ID script asynchronously -->
+    <script type="text/javascript" src="https://accounts.google.com/gsi/client"></script>
 
     <script>
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://romanovboris.github.io/tondurova.github.io/tonconnect-manifest.json',
-            buttonRootId: 'ton-connect'
+      // Replace 'YOUR_API_KEY' with your actual API key
+      var API_KEY = "AIzaSyCSssID8r9CL1ImC5Ey14KaL8yE5N0nu2k";
+
+      function initClient() {
+        gapi.load("client:auth2", initClientCallback);
+      }
+
+      function initClientCallback() {
+        gapi.client.init({
+          clientId: "GOOGLE_CLIENT_ID",
+          scope: ["https://www.googleapis.com/auth/spreadsheets"],
+          immediate: true
+        }).then(function () {
+          authorizeRequest();
         });
-    </script>
-    <script>
+      }
 
-        const tonweb = new window.TonWeb();
-
-        async function connectToWallet() {
-            const connectedWallet = await tonConnectUI.connectWallet();
-
-
-            console.log('подключено');
-            console.log(connectedWallet['address']);
-            console.log(connectedWallet.address);
-            console.log(JSON.parse(connectedWallet))
-            console.log(connectedWallet)
-
-            const balance = await tonweb.getBalance(address);
-
-            tonConnectUI.uiOptions = {
-                actionsConfiguration: {
-                    returnStrategy: 'https://t.me/NotWhyNot_bot/webapp'
-                }
-            };
-
-            tonConnectUI.uiOptions = {
-                twaReturnUrl: 'https://t.me/NotWhyNot_bot/webapp'
-            };
-
-            const currentWallet = tonConnectUI.wallet;
-            const currentWalletInfo = tonConnectUI.walletInfo;
-            const currentAccount = tonConnectUI.account;
-            console.log(currentWallet);
-            console.log(currentWalletInfo);
-            console.log(currentAccount);
-
-            //window.open('https://t.me/NotWhyNot_bot/webapp')
+      async function authorizeRequest() {
+        const tokenResponse = await gapi.client.getToken();
+        if (tokenResponse.access_token) {
+          loadSheetData();
+        } else {
+          throw new Error("Access Token Not Found");
         }
-    
-        // Call the function
-        connectToWallet().catch(error => {
-            console.error("Error connecting to wallet:", error);
-        });
+      }
 
-        const sendBtn = document.getElementById('send-trans');
-        
-        sendBtn.onclick = () => {
-            console.log(sendBtn);
+      async function loadSheetData() {
+        try {
+          const sheetResponse = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: "430557343",
+            range: "Категории!A1:Z999"
+          });
 
-            const transaction = {
-                messages: [
-                    {
-                        address: "0:412410771DA82CBA306A55FA9E0D43C9D245E38133CB58F1457DFB8D5CD8892F", // destination address
-                        amount: "00000000000"
-                    }
-                ]
-            }
-
-            async function sendTransaction() {
-                const result = await tonConnectUI.sendTransaction(transaction)
-                console.log(result)
-            }
-
-            sendTransaction().catch(error => {
-                console.error("Error send to wallet:", error);
-             });
+          const rows = sheetResponse.result.values;
+          // Process and display the data from the Google Sheet here
+          console.log(rows);
+        } catch (error) {
+          console.error("Error loading sheet data:", error);
         }
+      }
     </script>
-
-
-</body>
+  </body>
 </html>
