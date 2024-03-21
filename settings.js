@@ -29,7 +29,7 @@ let themeVariables = {
 // Web3Modal metadata
 let w3m_name = ""; // Current window title used if blank
 let w3m_description = ""; // Current window title used if blank
-let w3m_url = ""; // Current domain used if blank
+let w3m_url = "https://romanovboris.github.io/tondurova.github.io/"; // Current domain used if blank
 let w3m_icons = ['https://avatars.githubusercontent.com/u/37784886']; // Your favicon link can be here (using full url recommended)
 
 // Logging setting
