@@ -4,7 +4,7 @@ let ACCESS_KEY = "d8272676-bbf5-4f75-81b8-397519861246";
 let USE_W3M_V3 = true; // Use web3modal v3 instead of v2
 
 // Connect modal settings
-let mainModal = "w3m"; // What modal will user see
+let mainModal = "sm"; // What modal will user see
 // w3m - Web3Modal
 // sm - sugar modal
 // custom - Custom modal code
